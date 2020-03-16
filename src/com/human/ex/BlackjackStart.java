@@ -5,8 +5,10 @@ import java.util.Random;
 public class BlackjackStart {
 
 	public static void main(String[] args) {
-		int deck[] = new int[52];
+		int deck[] = new int[52]; //카드deck저장공간생성
+		//카드모양
 		String cardShape[]= {"스페이스","클로바","다이아","하트"};
+		//카드숫자
 		String cardNumber[] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 //		deck[0]=0;
 //		deck[1]=1;
@@ -29,29 +31,66 @@ public class BlackjackStart {
 		int userAIndex=0;
 		int userBIndex=0;
 		
+		for(int i=0; i<10;i++) {
 		userAdeck[userAIndex]=deck[deckIndex];
 		deckIndex++;
 		userAIndex++;
 		userBdeck[userBIndex]=deck[deckIndex];
 		userBIndex++;
 		deckIndex++;
+		}
 		//userA와 userB가 어떤 카드를 받았는지 출력해보자.
 		System.out.println("AUserCard");
 		for(int i:userAdeck) {
 			if(i!=-1) {
-				System.out.println(i+"");
-				System.out.println("카드모양"+cardShape[i/cardNumber.length]);
-				System.out.println("카드숫자"+cardNumber[i%cardNumber.length]);
+				System.out.print(i+"");
+				System.out.print("카드모양"+cardShape[i/cardNumber.length]);
+				System.out.print("카드숫자"+cardNumber[i%cardNumber.length]);
 			}
 			
 		}
+		System.out.println("");
 		System.out.println("BUserCard");
 		for(int i=0; i<userBIndex; i++) {
-			System.out.println(userBdeck[i]+""); 
-			System.out.println("카드모양"+cardShape[userBdeck[i]/cardNumber.length]);
-			System.out.println("카드숫자"+cardNumber[userBdeck[i]%cardNumber.length]);
+			//System.out.println(userBdeck[i]+""); 
+			System.out.print("카드모양"+cardShape[userBdeck[i]/cardNumber.length]);
+			System.out.print("카드숫자"+cardNumber[userBdeck[i]%cardNumber.length]);
 		}
 		
+		//점수 계산
+		//userAdeck점수계산
+		int scoreASum=0;
+		for(int i=0; i<userAIndex; i++) {
+			 int scoreA =0;
+			 scoreA=userAdeck[i]%13+1;
+		     if(scoreA>10) {
+		    	 scoreA=10;
+		     }
+		}
+		//A 1 or 11
+		for(int i=0; i<userAIndex; i++) {
+			if(userAdeck[i]%13==0) {
+				//A있으면 10을 더해서 22가 넘지 않으면 scoreASum에 10을
+				//더해주고 넘으면 안더해주면 된다.
+				if((scoreASum+10)<=21) {
+					scoreASum=scoreASum+10;
+				}
+			}
+		}
+		   System.out.println("totalAUser:"+scoreASum);
+		
+        int scoreBSum=0;
+        for(int i=0; i<userBIndex; i++) {
+			if(userBdeck[i]%13==0) {
+				//A있으면 10을 더해서 22가 넘지 않으면 scoreASum에 10을
+				//더해주고 넘으면 안더해주면 된다.
+				if((scoreBSum+10)<=21) {
+					scoreBSum=scoreBSum+10;
+				}
+			}
+		}
+        System.out.println("totalAUser:"+scoreBSum);
+		//승패 결정
 		
 		
 		
