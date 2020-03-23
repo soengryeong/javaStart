@@ -1,6 +1,7 @@
 package com.human.ex;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class BlackjackStart {
 
@@ -30,44 +31,56 @@ public class BlackjackStart {
 		int userBdeck[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 		int userAIndex = 0;
 		int userBIndex = 0;
-
-		for (int i = 0; i < 10; i++) {
+		boolean userAFlag=true;
+		boolean userBFlag=true;
+		
+        Scanner sc=new Scanner(System.in);
+        int scoreASum = 0;
+        int scoreBSum = 0;
+		for (int j = 0; j < 10; j++) {
+			if(userAFlag) {
+			   System.out.println("AUser님 카드를 수령하시겠습니까? 0-no 1=yes");
+			   if(sc.nextLine().equals("0")) {
+				userAFlag=false;
+			   };
+			}
+			if(userBFlag) {
+			   System.out.println("BUser님 카드를 수령하시겠습니까?");
+			   if(sc.nextLine().equals("0")) {
+			   userBFlag=false;
+			   };
+			}
+			//둘다 카드를 안받는다고 하면?
+			if(!(userAFlag || userBFlag)) {
+				break;
+			}
+			
+			if(userAFlag) {
 			userAdeck[userAIndex] = deck[deckIndex];
 			deckIndex++;
 			userAIndex++;
+			}
+			if(userBFlag) {
 			userBdeck[userBIndex] = deck[deckIndex];
 			userBIndex++;
 			deckIndex++;
-		}
-		// userA와 userB가 어떤 카드를 받았는지 출력해보자.
-		//A유저의 받은 카드 출력
-		System.out.println("AUserCard");
-		for (int i : userAdeck) {
-			if (i != -1) {
-				System.out.print(i + "");
-				System.out.print("카드모양" + cardShape[i / cardNumber.length]);
-				System.out.print("카드숫자" + cardNumber[i % cardNumber.length]);
 			}
-
-		}
-		//B유저의 받은 카드출력
-		System.out.println("");
-		System.out.println("BUserCard");
-		for (int i = 0; i < userBIndex; i++) {
-			// System.out.println(userBdeck[i]+"");
-			System.out.print("카드모양" + cardShape[userBdeck[i] / cardNumber.length]);
-			System.out.print("카드숫자" + cardNumber[userBdeck[i] % cardNumber.length]);
-		}
+		
+		
+		
 
 		// 점수 계산
 		// userAdeck점수계산
-		int scoreASum = 0;
+		scoreASum=0;
 		for (int i = 0; i < userAIndex; i++) {
 			int scoreA = 0;
 			scoreA = userAdeck[i] % 13 + 1;
 			if (scoreA > 10) {
 				scoreA = 10;
 			}
+			scoreASum=scoreASum+scoreA;
+			
+			
 		}
 		// A 1 or 11
 		for (int i = 0; i < userAIndex; i++) {
@@ -80,19 +93,62 @@ public class BlackjackStart {
 			}
 		}
 		System.out.println("totalAUser:" + scoreASum);
-
-		int scoreBSum = 0;
-		for (int i = 0; i < userBIndex; i++) {
-			if (userBdeck[i] % 13 == 0) {
-				// A있으면 10을 더해서 22가 넘지 않으면 scoreASum에 10을
-				// 더해주고 넘으면 안더해주면 된다.
-				if ((scoreBSum + 10) <= 21) {
-					scoreBSum = scoreBSum + 10;
-				}
-			}
+		if(scoreASum>21) {
+			System.out.println("21를 초과");
+			break;
 		}
-		System.out.println("totalBUser:" + scoreBSum);
 
+	//userBDeck점수 계산
+		   scoreBSum=0;
+		   for(int i=0;i<userBIndex;i++) {
+			     int scoureB=0;
+			     scoureB=userBdeck[i]%13+1;
+			    if(scoureB>10) {
+			      scoureB=10;
+			     }
+			     scoreBSum=scoreBSum+scoureB;
+			    }
+			    //A 1 or 11
+			    for(int i=0;i<userBIndex;i++) {
+			 
+			     if(userBdeck[i]%13==0) {
+			      //A있으면 10을더해서 22가 넘지않으면 scoureASum에 10을 
+			     //더해주고 넘으면 안더해주면된다.
+			      if((scoreBSum+10)<=21) {
+			       scoreBSum=scoreBSum+10;
+			      }    
+			     }
+			    }  
+			    System.out.println("totalBUser:"+scoreBSum);
+				if(scoreBSum>21) {
+					System.out.println("21를 초과");
+					break;
+				}
+		
+		
+		// userA와 userB가 어떤 카드를 받았는지 출력해보자.
+				//A유저의 받은 카드 출력
+				System.out.println("AUserCard");
+				for (int i : userAdeck) {
+					if (i != -1) {
+						System.out.print(i + "");
+						System.out.print("카드모양" + cardShape[i / cardNumber.length]);
+						System.out.print("카드숫자" + cardNumber[i % cardNumber.length]);
+					}
+
+				}
+				//B유저의 받은 카드출력
+				System.out.println("");
+				System.out.println("BUserCard");
+				for (int i = 0; i < userBIndex; i++) {
+					// System.out.println(userBdeck[i]+"");
+					System.out.print("카드모양" + cardShape[userBdeck[i] / cardNumber.length]);
+					System.out.print("카드숫자" + cardNumber[userBdeck[i] % cardNumber.length]);
+				}
+		
+
+	
+		}
 		// 승패 결정
 		// "A승리","B승리","무승부"
 		String playState = "계속";
