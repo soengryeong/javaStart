@@ -46,7 +46,7 @@ public class blackJac0323 {
 			playState="p2铰府";
 		}else if(p2>21){
 			playState="p1铰府";      	
-		}else if(p1<p2) {
+		}else if(p1>p2) {
 			playState="p1铰府";
 		}else if(p1==p2) {
 			playState="公铰何";
